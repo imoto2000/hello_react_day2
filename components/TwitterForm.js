@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { create } from "@/store/tweet";
 
 import {
   Container,
@@ -12,17 +15,19 @@ import {
   Alert,
 } from "reactstrap";
 
-import { useDispatch } from "react-redux";
-import { create } from "@/store/tweet";
-
 const TwitterForm = () => {
   const [text, setText] = useState("");
-  const [error, setError] = useState("");
   const dispatch = useDispatch();
+
+  const currentUser = useSelector((state) => {
+    return state.account;
+  });
 
   const onSubmit = (event) => {
     event.preventDefault();
-    dispatch(create({ text }));
+
+    dispatch(create({ text, id: currentUser.id }));
+
     console.log(">>>>>>>> tweet created!");
   };
 

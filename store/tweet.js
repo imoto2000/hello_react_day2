@@ -12,12 +12,12 @@ const tweet = createSlice({
   },
   reducers: {
     create(state, { type, payload }) {
-      console.log(">>>>> tweet", payload.text);
+      console.log(">>>>> tweet", payload);
       const tweet = {
         id: uuidv4(),
         text: payload.text,
         user: {
-          id: null,
+          id: payload.id,
         },
         createdAt: serverTimestamp(),
       };
