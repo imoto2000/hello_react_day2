@@ -4,11 +4,15 @@ import { Provider } from "react-redux";
 import store from "@/store";
 import Header from "@/components/layouts/Header";
 
+import { AuthUserProvider } from "@/context/AuthUserContext";
+
 function MyApp({ Component, pageProps }) {
   return (
     <Provider store={store}>
-      <Header> </Header>
-      <Component {...pageProps} />
+      <AuthUserProvider>
+        <Header> </Header>
+        <Component {...pageProps} />
+      </AuthUserProvider>
     </Provider>
   );
 }
