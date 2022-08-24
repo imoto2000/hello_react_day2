@@ -14,18 +14,15 @@ const account = createSlice({
       state.id = payload.id;
       state.email = payload.email;
       state.name = payload.name;
-      console.log(">>>> signup payload", state);
     },
 
     login(state, { type, payload }) {
       state.id = payload.id;
       state.email = payload.email;
       state.name = payload.name;
-      console.log(">>>> login payload", state);
     },
 
     logout(state, { type, payload }) {
-      console.log(">>>> logout payload", payload);
       signOut(auth);
       state.id = null;
       state.name = null;
