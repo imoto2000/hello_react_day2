@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 
 import { auth } from "@/plugins/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 import { useDispatch } from "react-redux";
-import { signup } from "@/store/account";
+import { login } from "@/store/account";
+import { create } from "@/store/user";
 
 import {
   Container,
@@ -20,6 +21,7 @@ import {
 } from "reactstrap";
 
 const SignUp = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [passwordOne, setPasswordOne] = useState("");
   const [passwordTwo, setPasswordTwo] = useState("");
@@ -38,10 +40,22 @@ const SignUp = () => {
         .then((user) => {
           console.log("Success. The user is created in firebase");
 
+          updateProfile(auth.currentUser, {
+            displayName: name,
+          });
+
           dispatch(
-            signup({
+            login({
               id: user.user.uid,
-              name: user.user.displayName,
+              name: name,
+              email: user.user.email,
+            })
+          );
+
+          dispatch(
+            create({
+              id: user.user.uid,
+              name: name,
               email: user.user.email,
             })
           );
@@ -67,6 +81,23 @@ const SignUp = () => {
             onSubmit={onSubmit}
           >
             {error && <Alert color="danger">{error}</Alert>}
+
+            <FormGroup row>
+              <Label for="signUpName" sm={4}>
+                Name
+              </Label>
+              <Col sm={8}>
+                <Input
+                  type="text"
+                  value={name}
+                  onChange={(ev) => setName(ev.target.value)}
+                  name="Name"
+                  id="signUpName"
+                  placeholder="Name"
+                />
+              </Col>
+            </FormGroup>
+
             <FormGroup row>
               <Label for="signUpEmail" sm={4}>
                 Email
@@ -75,7 +106,7 @@ const SignUp = () => {
                 <Input
                   type="email"
                   value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  onChange={(ev) => setEmail(ev.target.value)}
                   name="email"
                   id="signUpEmail"
                   placeholder="Email"
@@ -91,7 +122,7 @@ const SignUp = () => {
                   type="password"
                   name="passwordOne"
                   value={passwordOne}
-                  onChange={(event) => setPasswordOne(event.target.value)}
+                  onChange={(ev) => setPasswordOne(ev.target.value)}
                   id="signUpPassword"
                   placeholder="Password"
                 />
@@ -106,7 +137,7 @@ const SignUp = () => {
                   type="password"
                   name="password"
                   value={passwordTwo}
-                  onChange={(event) => setPasswordTwo(event.target.value)}
+                  onChange={(ev) => setPasswordTwo(ev.target.value)}
                   id="signUpPassword2"
                   placeholder="Password"
                 />

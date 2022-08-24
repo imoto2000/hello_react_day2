@@ -39,20 +39,21 @@ const Header = () => {
       <Link href="/">
         <h2>Hello React ${count}</h2>
       </Link>
-      <p>currentUser: {currentUser ? currentUser.id : "Not Login"}</p>
-      <h6>
-        {currentUser?.id ? (
-          <div>
-            {currentUser?.email}! You are logged in.
+      <div>
+        {currentUser.id ? (
+          <>
+            <h6>{currentUser.id}</h6>
+            <h6>{currentUser.name}</h6>
+            <h6>{currentUser.email}</h6>
             <button onClick={_logOut}>Logout</button>
-          </div>
+          </>
         ) : (
           <div>
             <button onClick={logIn}>Login</button>
             <button onClick={signUp}>signUp</button>
           </div>
         )}
-      </h6>
+      </div>
     </header>
   );
 };

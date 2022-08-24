@@ -26,7 +26,7 @@ const tweet = createSlice({
     },
 
     read(state, { type, payload }) {
-      state.count = state.count - payload;
+      // state.count = state.count - payload;
     },
   },
 });
