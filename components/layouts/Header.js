@@ -1,20 +1,29 @@
-import { useAuth } from "@/context/AuthUserContext";
 import { useRouter } from "next/router";
 import Link from "next/link";
+
 import { useSelector } from "react-redux";
 
+import { useDispatch } from "react-redux";
+import { logout } from "@/store/account";
+
 const Header = () => {
-  const { authUser, loading, _signOut } = useAuth();
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const count = useSelector((state) => {
     return state.counter.count;
   });
 
-  console.log(">>>>>>>>>>>>>> authUser", authUser);
+  const currentUser = useSelector((state) => {
+    return state.account;
+  });
 
-  const logOut = () => {
-    _signOut();
+  console.log(">>>>>>>>>>>>>> currentUser", currentUser);
+
+  const _logOut = () => {
+    // _signOut();
+    console.log(">>>>> called logout");
+    dispatch(logout());
   };
 
   const logIn = () => {
@@ -30,11 +39,12 @@ const Header = () => {
       <Link href="/">
         <h2>Hello React ${count}</h2>
       </Link>
+      <p>currentUser: {currentUser ? currentUser.id : "Not Login"}</p>
       <h6>
-        {authUser ? (
+        {currentUser?.id ? (
           <div>
-            {authUser?.email}! You are logged in.
-            <button onClick={logOut}>Logout</button>
+            {currentUser?.email}! You are logged in.
+            <button onClick={_logOut}>Logout</button>
           </div>
         ) : (
           <div>

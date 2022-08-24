@@ -18,4 +18,5 @@ const counter = createSlice({
 const { add, minus } = counter.actions;
 
 export { add, minus };
-export default counter.reducer;
+// export default counter.reducer;
+export default counter;

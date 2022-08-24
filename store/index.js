@@ -1,8 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import reducer from "@/store/counter";
+import counter from "@/store/counter";
+import account from "@/store/account";
 
 export default configureStore({
   reducer: {
-    counter: reducer,
+    counter: counter.reducer,
+    account: account.reducer,
   },
 });

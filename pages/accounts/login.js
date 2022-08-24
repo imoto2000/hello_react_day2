@@ -1,7 +1,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useAuth } from "@/context/AuthUserContext";
+
+import { auth } from "@/plugins/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
+import { useDispatch } from "react-redux";
+import { login } from "@/store/account";
 
 import {
   Container,
@@ -19,20 +24,28 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   const router = useRouter();
-  const { _signInWithEmailAndPassword } = useAuth();
+
+  const dispatch = useDispatch();
 
   const onSubmit = (event) => {
     event.preventDefault();
-
     setError(null);
-    _signInWithEmailAndPassword(email, password)
-      .then((authUser) => {
-        console.log("Success. The user is created in firebase");
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((user) => {
+        dispatch(
+          login({
+            id: user.user.uid,
+            email: user.user.email,
+            name: user.user.displayName,
+          })
+        );
         router.push("/");
       })
-      .catch((error) => {
-        setError(error.message);
+      .catch((err) => {
+        console.log(">>>>>> auth login error", err);
       });
   };
 
