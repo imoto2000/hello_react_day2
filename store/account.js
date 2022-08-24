@@ -1,12 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 import { auth } from "@/plugins/firebase";
-import {
-  onAuthStateChanged,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
+import { signOut } from "firebase/auth";
 
 const account = createSlice({
   name: "account",
