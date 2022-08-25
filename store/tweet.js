@@ -52,12 +52,12 @@ const fetch = (payload) => {
     const unsubscribe = await onSnapshot(q, async (snapshot) => {
       if (snapshot) {
         await snapshot.docChanges().forEach(async (change) => {
-          console.log(
-            ">>>>>>>>>>>> change.type",
-            change.type,
-            change.newIndex,
-            change.doc.data()
-          );
+          // console.log(
+          //   ">>>>>>>>>>>> change.type",
+          //   change.type,
+          //   change.newIndex,
+          //   change.doc.data()
+          // );
 
           if (change.type === "added") {
             if (change.doc.data().id) {

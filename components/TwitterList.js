@@ -17,6 +17,8 @@ import { useDispatch } from "react-redux";
 import { fetch } from "@/store/tweet";
 import { useSelector } from "react-redux";
 
+import { Box, Text } from "@chakra-ui/react";
+
 const TwitterList = () => {
   // const [tweets, setTweets] = useState([]);
   const dispatch = useDispatch();
@@ -35,22 +37,24 @@ const TwitterList = () => {
   }, [dispatch]);
 
   const tweetList = tweets.map((tweet) => (
-    <li key={tweet.id}>
-      <h6>ID: {tweet.id}</h6>
-      <p>Text: {tweet.text}</p>
-      <h6>
+    <Box key={tweet.id} p="5" borderWidth="1px" borderColor="gray.500">
+      <Text fontSize="sm" color="gray.400">
+        ID: {tweet.id}
+      </Text>
+      <Text p={5}>{tweet.text}</Text>
+      <Text fontSize="sm" color="gray.400">
         CreatedAt:
         {tweet.createdAt
           ? moment(tweet.createdAt.toMillis()).format("YYYY-MM-DD HH:mm")
           : ""}
-      </h6>
-    </li>
+      </Text>
+    </Box>
   ));
 
   return (
     <div>
       <h2>Twitter List {tweets.length}</h2>
-      <ul>{tweetList}</ul>
+      {tweetList}
     </div>
   );
 };
