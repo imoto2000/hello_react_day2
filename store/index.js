@@ -11,4 +11,8 @@ export default configureStore({
     user: user.reducer,
     tweet: tweet.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });

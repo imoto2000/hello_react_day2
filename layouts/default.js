@@ -14,7 +14,7 @@ export default function Default({ children }) {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(">>>>>> called onAuthStateChanged with user", user);
+        console.log(">>>>>> called onAuthStateChanged with user");
 
         dispatch(
           login({

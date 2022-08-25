@@ -18,8 +18,6 @@ const Header = () => {
     return state.account;
   });
 
-  console.log(">>>>>>>>>>>>>> currentUser", currentUser);
-
   const _logOut = () => {
     // _signOut();
     console.log(">>>>> called logout");

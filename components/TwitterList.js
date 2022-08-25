@@ -13,42 +13,36 @@ import {
 import { async } from "@firebase/util";
 import moment from "moment";
 
+import { useDispatch } from "react-redux";
+import { fetch } from "@/store/tweet";
+import { useSelector } from "react-redux";
+
 const TwitterList = () => {
-  const [tweets, setTweets] = useState([]);
+  // const [tweets, setTweets] = useState([]);
+  const dispatch = useDispatch();
+
+  const tweets = useSelector((state) => {
+    // console.log(">>>>>>>>>>>  state.tweet.tweets", state.tweet.tweets);
+
+    return state.tweet.tweets;
+  });
 
   useEffect(() => {
-    // const q = query(collection(db, "tweets"), where("status", "==", 1));
-
-    const getTweets = async () => {
-      setTweets([]);
-      const newTweets = [];
-      const q = query(collection(db, "tweets"));
-      await getDocs(q).then((snapshot) => {
-        snapshot.forEach((doc) => {
-          console.log(">>>>>> doc.id", doc.id);
-          if (doc.id) {
-            newTweets.push(doc.data());
-          }
-        });
-      });
-
-      setTweets(newTweets);
-    };
-
-    getTweets();
-
+    dispatch(fetch());
     return () => {
       //
     };
-  }, []);
+  }, [dispatch]);
 
   const tweetList = tweets.map((tweet) => (
     <li key={tweet.id}>
       <h6>ID: {tweet.id}</h6>
       <p>Text: {tweet.text}</p>
       <h6>
-        CreatedAt:{" "}
-        {moment(tweet.createdAt.toMillis()).format("YYYY-MM-DD HH:mm")}
+        CreatedAt:
+        {tweet.createdAt
+          ? moment(tweet.createdAt.toMillis()).format("YYYY-MM-DD HH:mm")
+          : ""}
       </h6>
     </li>
   ));

@@ -2,13 +2,23 @@ import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
 import { db } from "@/plugins/firebase";
-import { deleteDoc, doc, setDoc, serverTimestamp } from "firebase/firestore";
+import {
+  orderBy,
+  query,
+  onSnapshot,
+  getDocs,
+  collection,
+  deleteDoc,
+  doc,
+  setDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 
 const tweet = createSlice({
   name: "tweet",
   initialState: {
     tweet: null,
-    tweets: null,
+    tweets: [],
   },
   reducers: {
     create(state, { type, payload }) {
@@ -26,12 +36,49 @@ const tweet = createSlice({
     },
 
     read(state, { type, payload }) {
-      // state.count = state.count - payload;
+      state.tweets = [...payload];
     },
   },
 });
 
 const { create, read } = tweet.actions;
 
-export { create, read };
+const fetch = (payload) => {
+  return async (dispatch, getState) => {
+    console.log(">>>>>>>>> called fetch");
+
+    const newTweets = [];
+    const q = query(collection(db, "tweets"), orderBy("createdAt", "desc"));
+    const unsubscribe = await onSnapshot(q, async (snapshot) => {
+      if (snapshot) {
+        await snapshot.docChanges().forEach(async (change) => {
+          console.log(
+            ">>>>>>>>>>>> change.type",
+            change.type,
+            change.newIndex,
+            change.doc.data()
+          );
+
+          if (change.type === "added") {
+            if (change.doc.data().id) {
+              const newIndex = change.newIndex;
+              newTweets.splice(newIndex, 0, change.doc.data());
+            }
+          }
+
+          if (change.type === "modified") {
+            if (change.doc.data().id) {
+              const newIndex = change.newIndex;
+              newTweets.splice(newIndex, 1, change.doc.data());
+            }
+          }
+        });
+      }
+
+      dispatch(read(newTweets));
+    });
+  };
+};
+
+export { create, read, fetch };
 export default tweet;
