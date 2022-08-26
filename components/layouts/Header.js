@@ -1,13 +1,33 @@
 import { useRouter } from "next/router";
-import Link from "next/link";
+// import Link from "next/link";
 
 import { useSelector } from "react-redux";
 
 import { useDispatch } from "react-redux";
 import { logout } from "@/store/account";
 
-import { Button, Textarea, useToast } from "@chakra-ui/react";
-import { EmailIcon } from "@chakra-ui/icons";
+import LinkNav from "@/components/layouts/LinkNav";
+
+import {
+  Button,
+  Textarea,
+  useToast,
+  Link,
+  Box,
+  Avatar,
+  HStack,
+  Stack,
+  List,
+  ListItem,
+  ListIcon,
+  Text,
+  Center,
+} from "@chakra-ui/react";
+import { EmailIcon, Icon } from "@chakra-ui/icons";
+import { BsTwitter } from "react-icons/Bs";
+
+import { MdCheckCircle, MdHome } from "react-icons/Md";
+
 // import TwitterForm from "../TwitterForm";
 import {
   Modal,
@@ -28,10 +48,6 @@ const Header = () => {
 
   const router = useRouter();
   const dispatch = useDispatch();
-
-  const count = useSelector((state) => {
-    return state.counter.count;
-  });
 
   const currentUser = useSelector((state) => {
     return state.account;
@@ -61,25 +77,59 @@ const Header = () => {
   };
 
   return (
-    <header>
+    <Box
+      pos="fixed"
+      left="0"
+      bottom="0"
+      w="30%"
+      h="100vh"
+      zIndex={10}
+      bg="gray.100"
+      p="10"
+    >
       <Link href="/">
-        <h2>Hello React ${count}</h2>
+        <Icon as={BsTwitter} color="blue.400" boxSize="50px"></Icon>
       </Link>
       <div>
         {currentUser.id ? (
           <>
-            <h6>{currentUser.id}</h6>
-            <h6>{currentUser.name}</h6>
-            <h6>{currentUser.email}</h6>
-            <button onClick={_logOut}>Logout</button>
-            <Button
-              leftIcon={<EmailIcon />}
-              colorScheme="orange"
-              variant="solid"
-              onClick={onOpen}
+            <LinkNav></LinkNav>
+
+            <Center>
+              <Button
+                leftIcon={<EmailIcon />}
+                colorScheme="blue"
+                variant="solid"
+                onClick={onOpen}
+                mt="10"
+              >
+                ツイートする
+              </Button>
+            </Center>
+
+            <Box
+              pos="fixed"
+              left="0"
+              bottom="0"
+              w="30%"
+              background="white"
+              zIndex={2}
+              p="5"
             >
-              ツイートする
-            </Button>
+              <HStack>
+                <Stack>
+                  <Avatar
+                    size="md"
+                    name="Dan Abrahmov"
+                    src="https://bit.ly/dan-abramov"
+                  />
+                </Stack>
+                <Stack>
+                  <h6>{currentUser.name}</h6>
+                  <small>{currentUser.id}</small>
+                </Stack>
+              </HStack>
+            </Box>
 
             <Modal isOpen={dialog} onClose={onClose}>
               <ModalOverlay />
@@ -113,7 +163,7 @@ const Header = () => {
           </div>
         )}
       </div>
-    </header>
+    </Box>
   );
 };
 

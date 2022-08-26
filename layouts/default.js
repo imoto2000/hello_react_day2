@@ -39,7 +39,7 @@ export default function Default({ children }) {
           <Header></Header>
         </Stack>
 
-        <Stack w="40%" h="100vh" p={5} bg="gray.200">
+        <Stack w="40%" h="100vh" p={5} bg="white">
           <main>{children}</main>
         </Stack>
 
